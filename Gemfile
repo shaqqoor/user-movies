@@ -13,6 +13,7 @@ gem 'require_all'
 gem 'sqlite3', '~> 1.3.6'
 gem 'shotgun'
 gem 'rack-flash3'
+gem 'bcrypt'
 
 #debugging
 gem 'pry'
