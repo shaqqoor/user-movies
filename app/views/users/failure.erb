@@ -1,0 +1,5 @@
+<h1>Movie For You Error</h1>
+<% if flash.has?(:message) %>
+  <%= flash[:message] %>
+<% end %>
+<p>It seems there was a problem. Please return to <a href="/">the home page</a> and try again.</p>
