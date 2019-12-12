@@ -9,7 +9,7 @@ class Scraper
             movie_rating = movie.css(".tMeterScore").text.strip
             #movie_critics = movie.css("div.info.critics-consensus").text.strip.split("Critics Consensus:").join
             #movie_synopsis = movie.css("div.info.synopsis").text.split("Synopsis:").join.split("[More]").join.strip
-            #movie_actors = movie.css("div.info.cast").text.strip.split("Starring:").join.strip.split(", ")
+            movie_actors = movie.css("div.info.cast").text.strip.split("Starring:").join.strip.split(", ")
             movie_director = movie.css("div.info.director").text.strip.split("Directed By:").join.strip.split(", ").first
 
             movie_details = {
@@ -18,7 +18,7 @@ class Scraper
                 :rating => movie_rating,
                 #:critics => movie_critics,
                 #:synopsis => movie_synopsis,
-                #:actors => movie_actors,
+                :actors => movie_actors,
                 :director => movie_director,
             }
 
@@ -29,9 +29,13 @@ class Scraper
 
     private
     def build_movie(data)
-        director = Director.create(name: data[:director])
-        movie = Movie.create(name: data[:name], year: data[:year], rating: data[:rating])
+        director = Director.find_or_create_by(name: data[:director])
+        movie = Movie.find_or_create_by(name: data[:name], year: data[:year], rating: data[:rating])
         movie.director = director
+        data[:actors].each do |actor|
+            actor = Actor.find_or_create_by(name: actor)
+            movie.actors << actor
+        end
         movie.save
     end
 end
