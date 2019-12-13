@@ -1,0 +1,13 @@
+<h1>Update Movie</h1>
+<h2>Edit for <%= @movie.name %></h2>
+
+<form action="/movies/<%= @movie.slug %>" method="POST">
+  <input id="hidden" type="hidden" name="_method" value="patch">
+  <input type="text" name="movie[name]" value="<%= @movie.name %>"><br><br>
+  <input type="text" name="movie[year]" value="<%= @movie.year %>"><br><br>
+  <input type="text" name="movie[rating]" value="<%= @movie.rating %>"><br><br>
+  <input type="text" name="director" value="<%= @movie.director.name %>"><br><br>
+  <textarea rows="4" cols="25" name="actors"><%= @movie.actors.map { |actor| actor.name }.join(", ") %></textarea><br><br>
+
+  <input type="submit" value="Save">
+</form>

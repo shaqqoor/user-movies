@@ -1,0 +1,9 @@
+<% if flash.has?(:message) %>
+  <%= flash[:message] %>
+<% end %>
+<h2>Welcome to your movie account <%= @user.username %></h2>
+<ul>Favorite movies:
+    <% @user.movies.each do |movie| %>
+    <li><%= movie.name %></li>
+    <% end %>
+</ul>

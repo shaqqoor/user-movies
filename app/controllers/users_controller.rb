@@ -1,10 +1,7 @@
 class UsersController < ApplicationController
     
     configure do
-        set :views, Proc.new { File.join(root, "../views/") }
-        enable :sessions
         set :session_secret, "password_security"
-        use Rack::Flash
     end
 
     get '/users/login' do
@@ -12,7 +9,7 @@ class UsersController < ApplicationController
     end
 
     post '/login' do
-        @user = User.find_by(username: params[:username], password: params[:password])
+        @user = User.find_by(username: params[:username])
         if @user && @user.authenticate(params[:password])
             session[:user_id] = @user.id
             flash[:message] = "Login approved."
@@ -24,8 +21,9 @@ class UsersController < ApplicationController
     end
     
     get '/account' do
-        if Helpers.logged_in?
-            erb :account
+        if Helpers.logged_in?(session)
+            @user = User.find(session[:user_id])
+            erb :'users/account'
         else
             flash[:message] = "Login to continue."
             erb :'users/login'
