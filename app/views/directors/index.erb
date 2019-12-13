@@ -1,0 +1,6 @@
+<h1>Welcome to Directors Page</h1>
+<ul>List of Directors: 
+    <% @directors.each do |director| %>
+    <li><a href="/directors/<%= director.slug %>"><%= director.name %></a></li>
+    <% end %>
+</ul>

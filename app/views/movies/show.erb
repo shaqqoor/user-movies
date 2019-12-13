@@ -4,7 +4,7 @@
 <h1><%=@movie.name%></h1>
 <h3>Year: <%= @movie.year %></h3>
 <h3>Rating: <%= @movie.rating %></h3>
-<h3>By: <%= @movie.director.name %></h3>
+<h3>By: <a href="/directors/<%= @movie.director.slug %>"><%= @movie.director.name %></a></h3>
 <h3>Cast: </h3>
 <ul>
 <% @movie.actors.each do |actor| %>

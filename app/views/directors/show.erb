@@ -1,0 +1,6 @@
+<h3><%= @director.name %></h3>
+<ul>Movies:
+<% @director.movies.each do |movie| %>
+<li><a href="/movies/<%= movie.slug %>"><%= movie.name %></a></li>
+<% end %>
+</ul>
