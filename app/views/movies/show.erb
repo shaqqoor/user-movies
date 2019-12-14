@@ -8,7 +8,7 @@
 <h3>Cast: </h3>
 <ul>
 <% @movie.actors.each do |actor| %>
-<li><%= actor.name %></li>
+<li><a href="/actors/<%= actor.slug %>"><%= actor.name %></a></li>
 <% end %>
 </ul>
 <p>To edit this movie click <a href="/movies/<%= @movie.slug %>/edit">Update</a></p>
