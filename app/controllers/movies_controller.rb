@@ -15,8 +15,9 @@ class MoviesController < ApplicationController
     end
 
     post '/movies' do
+        params[:movie][:name] = params[:movie][:name].downcase
         @movie = Movie.find_or_create_by(params[:movie])
-        @movie.director = Director.find_or_create_by(name: params[:director])
+        @movie.director = Director.find_or_create_by(name: params[:director].downcase)
         @actors = Actor.find_or_create_actors(params[:actors])
         @movie.actors += @actors
         if @movie.save

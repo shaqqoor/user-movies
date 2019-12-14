@@ -1,6 +1,6 @@
 <h1>Welcome to Movies Home Page</h1>
 <ul>List of Movies: 
     <% @movies.each do |movie| %>
-    <li><a href="/movies/<%= movie.slug %>"><%= movie.name %></a></li>
+    <li><a href="/movies/<%= movie.slug %>"><%= movie.cap %></a></li>
     <% end %>
 </ul>

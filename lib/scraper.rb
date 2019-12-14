@@ -29,11 +29,12 @@ class Scraper
 
     private
     def build_movie(data)
-        director = Director.find_or_create_by(name: data[:director])
-        movie = Movie.find_or_create_by(name: data[:name], year: data[:year], rating: data[:rating])
+        data[:director] ||= "Jon Favreau"
+        director = Director.find_or_create_by(name: data[:director].downcase)
+        movie = Movie.find_or_create_by(name: data[:name].downcase, year: data[:year], rating: data[:rating])
         movie.director = director
         data[:actors].each do |actor|
-            actor = Actor.find_or_create_by(name: actor)
+            actor = Actor.find_or_create_by(name: actor.downcase)
             movie.actors << actor
         end
         movie.save

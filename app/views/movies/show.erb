@@ -1,14 +1,14 @@
 <% if flash.has?(:message) %>
   <%= flash[:message] %>
 <% end %>
-<h1><%=@movie.name%></h1>
+<h1><%=@movie.cap%></h1>
 <h3>Year: <%= @movie.year %></h3>
 <h3>Rating: <%= @movie.rating %></h3>
-<h3>By: <a href="/directors/<%= @movie.director.slug %>"><%= @movie.director.name %></a></h3>
+<h3>By: <a href="/directors/<%= @movie.director.slug %>"><%= @movie.director.cap %></a></h3>
 <h3>Cast: </h3>
 <ul>
 <% @movie.actors.each do |actor| %>
-<li><a href="/actors/<%= actor.slug %>"><%= actor.name %></a></li>
+<li><a href="/actors/<%= actor.slug %>"><%= actor.cap %></a></li>
 <% end %>
 </ul>
 <p>To edit this movie click <a href="/movies/<%= @movie.slug %>/edit">Update</a></p>
