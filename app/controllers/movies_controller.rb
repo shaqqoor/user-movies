@@ -1,8 +1,13 @@
 class MoviesController < ApplicationController
 
     get '/movies' do
-        @movies = Movie.all
-        erb :'/movies/index'
+        if Helpers.logged_in?(session)
+            @movies = Movie.all
+            erb :'/movies/index'
+        else
+            flash[:message] = "Login to continue"
+            erb :'/users/login'
+        end
     end
 
     get '/movies/new' do

@@ -1,9 +1,17 @@
 <% if flash.has?(:message) %>
   <%= flash[:message] %>
-<% end %>
-<h2>Welcome to your movie account <%= @user.username %></h2>
+<% end %><br>
+<a href="/users/logout">Log Out</a>
+<h2>Welcome to your movie account, <%= @user.username %></h2>
 <ul>Favorite movies:
     <% @user.movies.each do |movie| %>
-    <li><%= movie.name %></li>
+    <li><a href="/movies/<%= movie.slug %>"><%= movie.name %></a></li>
     <% end %>
 </ul>
+
+<form method="POST" action="/account">
+  <label for="movie_name">Search for a Movie:</label><br>
+  <input type="text" id="movie_name" name="movie[name]" placeholder="Title">
+  <input type="submit" value="Search">
+</form>
+

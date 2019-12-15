@@ -13,16 +13,17 @@ class UsersController < ApplicationController
         if @user && @user.authenticate(params[:password])
             session[:user_id] = @user.id
             flash[:message] = "Login approved."
-            redirect '/account'
+            erb :'users/account'
         else
             flash[:message] = "Username or Password Error"
-            redirect '/failure'
+            erb :'users/failure'
         end
     end
     
-    get '/account' do
+    get '/users/account' do
         if Helpers.logged_in?(session)
             @user = User.find(session[:user_id])
+            @movies = Movie.all
             erb :'users/account'
         else
             flash[:message] = "Login to continue."
@@ -35,16 +36,39 @@ class UsersController < ApplicationController
     end
 
     post '/signup' do
-        debugger
         @user = User.new(username: params[:username], password: params[:password])
         if @user.save
-            redirect '/users/login'
+            flash[:message] = "Thank you for signing up, login to continue."
+            erb :'users/login'
         else
-            redirect '/failure'
+            flash[:message] = "Unable to signup"
+            erb :'users/failure'
         end
     end
 
-    get '/failure' do
+    post '/account' do
+        if Helpers.logged_in?(session)
+            @user = User.find(session[:user_id])
+            @movie = Movie.find_by(name: params[:movie][:name].downcase)
+            if @movie
+                flash[:message] = "One Movie Found"
+                erb :'movies/show'
+            else
+                flash[:message] = "Movie not Found, try again"
+                erb :'users/account'
+            end
+        else
+            flash[:message] = "Please, login to continue"
+            erb :'users/failure'
+        end
+    end
+
+    get '/users/logout' do
+        session.clear
+        redirect '/users/login'
+    end
+
+    get '/users/failure' do
         erb :'users/failure'
     end
 
