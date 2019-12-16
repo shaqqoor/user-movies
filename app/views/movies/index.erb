@@ -1,4 +1,5 @@
 <h1>Welcome to Movies Home Page</h1>
+<h2><a href="/users/account">Home Page</a></h2>
 <ul>List of Movies: 
     <% @movies.each do |movie| %>
     <li><a href="/movies/<%= movie.slug %>"><%= movie.cap %></a></li>

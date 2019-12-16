@@ -11,7 +11,12 @@ class MoviesController < ApplicationController
     end
 
     get '/movies/new' do
-        erb :'movies/new'
+        if Helpers.logged_in?(session)
+            erb :'movies/new'
+        else
+            flash[:message] = "Please log in to create a new movie!"
+            erb :'users/login'
+        end
     end
 
     get '/movies/:slug' do
@@ -41,8 +46,14 @@ class MoviesController < ApplicationController
     end
 
     get '/movies/:slug/edit' do
-        @movie = Movie.find_by_slug(params[:slug])
-        erb :'movies/edit'
+        if Helpers.logged_in?(session)
+            @user = Helpers.current_user(session)
+            @movie = Movie.find_by_slug(params[:slug])
+            erb :'movies/edit'
+        else
+            flash[:message] = "To edit the current movie you'll have to login!"
+            erb :'users/login'
+        end
     end
     
     patch '/movies/:slug' do
@@ -61,16 +72,17 @@ class MoviesController < ApplicationController
         end
     end
 
-    get '/movies/:slug/delete' do
-        @movie = Movie.find_by_slug(params[:slug])
-        erb :'movies/delete'
-    end
+    #Removing this feature for now due to safty lol
+    # get '/movies/:slug/delete' do
+    #     @movie = Movie.find_by_slug(params[:slug])
+    #     erb :'movies/delete'
+    # end
 
-    delete '/movies/:slug' do
-        @movie = Movie.find_by_slug(params[:slug])
-        Movie.delete(@movie.id)
-        redirect '/movies'
-    end
+    # delete '/movies/:slug' do
+    #     @movie = Movie.find_by_slug(params[:slug])
+    #     Movie.delete(@movie.id)
+    #     redirect '/movies'
+    # end
 
     get '/failure' do
         erb :'movies/failure'

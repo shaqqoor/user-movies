@@ -63,11 +63,6 @@ class UsersController < ApplicationController
         end
     end
 
-    get '/users/logout' do
-        session.clear
-        redirect '/users/login'
-    end
-
     patch '/users/account/:movie_id' do
         if Helpers.logged_in?(session)
             @user = Helpers.current_user(session)
@@ -92,6 +87,11 @@ class UsersController < ApplicationController
              flash[:message] = "Log in to continue!"
              erb :'users/failure'
         end
+    end
+
+    get '/users/logout' do
+        session.clear
+        redirect '/users/login'
     end
 
     get '/users/failure' do
