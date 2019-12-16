@@ -23,3 +23,5 @@ gem 'byebug'
 gem 'nokogiri'
 
 gem 'thin'
+
+gem 'tty-tree', '~> 0.3.0'
