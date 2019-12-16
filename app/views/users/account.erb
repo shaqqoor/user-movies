@@ -4,11 +4,12 @@
 <a href="/users/logout">Log Out</a>
 <% @user = Helpers.current_user(session) %>
 <h2>Welcome to your movie account, <%= @user.username %></h2>
-<ul>Favorite movies:
+<h3>Favorite movies:</h3>
+<ul>
     <% @user.movies.each do |movie| %>
-    <li><a href="/movies/<%= movie.slug %>"><%= movie.name %></a></li>
+    <li><a href="/movies/<%= movie.slug %>"><%= movie.cap %></a></li>
     <% end %>
-</ul>
+</ul><br><br>
 
 <form method="POST" action="/account">
   <label for="movie_name">Search for a Movie:</label><br>
@@ -18,5 +19,5 @@
 
 <h3>View all movies: <a href="/movies">movies</a></h3>
 <h3>View all actors: <a href="/actors">actors</a></h3>
-<h3>View all directors: <a href="/movies">directors</a></h3>
+<h3>View all directors: <a href="/directors">directors</a></h3>
 

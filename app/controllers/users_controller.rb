@@ -67,8 +67,9 @@ class UsersController < ApplicationController
         if Helpers.logged_in?(session)
             @user = Helpers.current_user(session)
             @movie = Movie.find(params[:movie_id])
-            @user.movies << @movie
+            @user.movies << @movie if !@user.movies.include?(@movie)
             @user.save
+            flash[:message] = "#{@movie.cap} was added to your list"
             erb :'users/account'
         else
              flash[:message] = "Log in to continue!"
