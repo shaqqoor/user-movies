@@ -5,8 +5,8 @@ class MoviesController < ApplicationController
             @movies = Movie.all
             erb :'/movies/index'
         else
-            flash[:message] = "Login to continue"
-            erb :'/users/login'
+            flash[:message] = "To browse through movies you'll have to login!"
+            erb :'users/login'
         end
     end
 
@@ -15,8 +15,14 @@ class MoviesController < ApplicationController
     end
 
     get '/movies/:slug' do
-        @movie = Movie.find_by_slug(params[:slug])
-        erb :'movies/show'
+        if Helpers.logged_in?(session)
+            @user = User.find(session[:user_id])
+            @movie = Movie.find_by_slug(params[:slug])
+            erb :'movies/show'
+        else
+            flash[:message] = "To view the current movie you'll have to login!"
+            erb :'users/login'
+        end
     end
 
     post '/movies' do

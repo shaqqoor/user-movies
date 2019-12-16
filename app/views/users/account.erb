@@ -2,6 +2,7 @@
   <%= flash[:message] %>
 <% end %><br>
 <a href="/users/logout">Log Out</a>
+<% @user = Helpers.current_user(session) %>
 <h2>Welcome to your movie account, <%= @user.username %></h2>
 <ul>Favorite movies:
     <% @user.movies.each do |movie| %>

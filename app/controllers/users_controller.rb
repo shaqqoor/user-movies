@@ -1,11 +1,11 @@
 class UsersController < ApplicationController
-    
-    configure do
-        set :session_secret, "password_security"
-    end
 
     get '/users/login' do
-        erb :'users/login'
+        if Helpers.logged_in?(session)
+            erb :'users/account'
+        else
+            erb :'users/login'
+        end
     end
 
     post '/login' do
@@ -66,6 +66,32 @@ class UsersController < ApplicationController
     get '/users/logout' do
         session.clear
         redirect '/users/login'
+    end
+
+    patch '/users/account/:movie_id' do
+        if Helpers.logged_in?(session)
+            @user = Helpers.current_user(session)
+            @movie = Movie.find(params[:movie_id])
+            @user.movies << @movie
+            @user.save
+            erb :'users/account'
+        else
+             flash[:message] = "Log in to continue!"
+             erb :'users/failure'
+        end
+    end
+
+    delete '/users/account/:movie_id' do
+        if Helpers.logged_in?(session)
+            @user = Helpers.current_user(session)
+            @movie = Movie.find(params[:movie_id])
+            @user.movies.delete(@movie)
+            @user.save
+            erb :'users/account'
+        else
+             flash[:message] = "Log in to continue!"
+             erb :'users/failure'
+        end
     end
 
     get '/users/failure' do
