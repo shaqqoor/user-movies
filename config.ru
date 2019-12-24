@@ -1,7 +1,7 @@
 require './config/environment'
 
 begin
-  fi_check_migration
+  #fi_check_migration
 
   use Rack::MethodOverride
   Dir[File.join(File.dirname(__FILE__), "app/controllers", "*.rb")].collect {|file| File.basename(file).split(".")[0] }.reject {|file| file == "application_controller" }.each do |file|

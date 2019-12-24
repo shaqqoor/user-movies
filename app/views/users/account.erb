@@ -11,6 +11,18 @@
     <% end %>
 </ul><br><br>
 
+<h3>Owned movies:</h3>
+<ul>
+    <% @owned_movies = Movie.all.select { |movie| movie.owned_by == @user.id } %>
+    <% if @owned_movies %>
+      <% @owned_movies.each do |movie| %>
+      <li><a href="/movies/<%= movie.slug %>"><%= movie.cap %></a></li>
+      <% end %>
+    <% end %>
+</ul><br>
+<h3>Create a movie to own for yourself: <a href="/movies/new">Create a Movie</a></h3>
+
+
 <form method="POST" action="/account">
   <label for="movie_name">Search for a Movie:</label><br>
   <input type="text" id="movie_name" name="movie[name]" placeholder="Title">

@@ -24,6 +24,7 @@ class UsersController < ApplicationController
         if Helpers.logged_in?(session)
             @user = User.find(session[:user_id])
             @movies = Movie.all
+            @owned_movies = @movies.select { |movie| movie.owned_by == @user.id }
             erb :'users/account'
         else
             flash[:message] = "Login to continue."
@@ -67,10 +68,15 @@ class UsersController < ApplicationController
         if Helpers.logged_in?(session)
             @user = Helpers.current_user(session)
             @movie = Movie.find(params[:movie_id])
-            @user.movies << @movie if !@user.movies.include?(@movie)
-            @user.save
-            flash[:message] = "#{@movie.cap} was added to your list"
-            erb :'users/account'
+            if (!@user.movies.include?(@movie)) && (@movie.owned_by == 0 || @movie.owned_by == @user.id)
+                @user.movies << @movie
+                @user.save
+                flash[:message] = "#{@movie.cap} was added to your list!"
+                erb :'users/account'
+            else
+                flash[:message] = "You can't add a movie that was made by another user!"
+                erb :'users/account'
+            end
         else
              flash[:message] = "Log in to continue!"
              erb :'users/failure'

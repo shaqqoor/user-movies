@@ -31,25 +31,57 @@ class MoviesController < ApplicationController
     end
 
     post '/movies' do
-        params[:movie][:name] = params[:movie][:name].downcase
-        @movie = Movie.find_or_create_by(params[:movie])
-        @movie.director = Director.find_or_create_by(name: params[:director].downcase)
-        @actors = Actor.find_or_create_actors(params[:actors])
-        @movie.actors += @actors
-        if @movie.save
-            flash[:message] = "Successfully created movie."
-            redirect "/movies/#{@movie.slug}"
+        if Helpers.logged_in?(session)
+            @user = Helpers.current_user(session)
+            params[:movie][:name] = params[:movie][:name].downcase
+            @movie = Movie.create(params[:movie])
+            @movie.director = Director.find_or_create_by(name: params[:director].downcase)
+            @actors = Actor.find_or_create_actors(params[:actors])
+            @actors.each do |actor|
+                @movie.actors << actor if !@movie.actors.include?(actor)
+            end
+            @movie.owned_by = @user.id
+            if @movie.save
+                flash[:message] = "Successfully created movie."
+                erb :'movies/show'
+            else
+                flash[:message] = "Unable to create the movie. Try again!"
+                erb :'movies/new'
+            end
         else
-            flash[:message] = "Unable to create the movie."
-            redirect '/failure'
+            flash[:message] = "To create a movie you'll have to login!"
+            erb :'users/login'
         end
+        #params[:movie][:name] = params[:movie][:name].downcase
+        #@movie = Movie.find_or_create_by(params[:movie])
+        #@movie.director = Director.find_or_create_by(name: params[:director].downcase)
+        #@actors = Actor.find_or_create_actors(params[:actors])
+        #@actors.each do |actor|
+        #    @movie.actors << actor if !@movie.actors.include?(actor)
+        #end
+        #@movie.editable = true
+        #@user = Helpers.current_user
+        #@user.movies << @movie
+        #@user.save
+        #if @movie.save
+        #    flash[:message] = "Successfully created movie."
+        #    redirect "/movies/#{@movie.slug}"
+        #else
+        #    flash[:message] = "Unable to create the movie."
+        #    redirect '/failure'
+        #end
     end
 
     get '/movies/:slug/edit' do
         if Helpers.logged_in?(session)
             @user = Helpers.current_user(session)
             @movie = Movie.find_by_slug(params[:slug])
-            erb :'movies/edit'
+            if @movie.owned_by == @user.id
+                erb :'movies/edit'
+            else
+                flash[:message] = "To edit a movie, you have to own it."
+                erb :'users/account'
+            end
         else
             flash[:message] = "To edit the current movie you'll have to login!"
             erb :'users/login'

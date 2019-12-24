@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 2019_12_12_030230) do
     t.string "year"
     t.string "rating"
     t.integer "director_id"
+    t.integer "owned_by"
   end
 
   create_table "user_movies", force: :cascade do |t|

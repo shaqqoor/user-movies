@@ -5,6 +5,7 @@ class CreateMovies < ActiveRecord::Migration[5.2]
       t.string :year
       t.string :rating
       t.integer :director_id
+      t.integer :owned_by
     end
   end
 end
