@@ -68,13 +68,13 @@ class UsersController < ApplicationController
         if Helpers.logged_in?(session)
             @user = Helpers.current_user(session)
             @movie = Movie.find(params[:movie_id])
-            if (!@user.movies.include?(@movie)) && (@movie.owned_by == 0 || @movie.owned_by == @user.id)
+            if !@user.movies.include?(@movie) #&& (@movie.owned_by == 0 || @movie.owned_by == @user.id)
                 @user.movies << @movie
                 @user.save
-                flash[:message] = "#{@movie.cap} was added to your list!"
+                flash[:message] = "#{@movie.cap} was added to your favorite list!"
                 erb :'users/account'
             else
-                flash[:message] = "You can't add a movie that was made by another user!"
+                flash[:message] = "Movie is already in your favorite list"
                 erb :'users/account'
             end
         else

@@ -16,13 +16,13 @@
 <% if @user.movies.include?(@movie) %>
   <form action="/users/account/<%= @movie.id %>" method="POST">
     <input id="hidden" type="hidden" name="_method" value="delete">
-    <label>Remove <%= @movie.cap %> from my list</label>
+    <label>Remove <%= @movie.cap %> from my favorite list</label>
     <input type="submit" value="Delete">
   </form>
 <% else %>
   <form action="/users/account/<%= @movie.id %>" method="POST">
     <input id="hidden" type="hidden" name="_method" value="patch">
-    <label>Add <%= @movie.cap %> to my list</label>
+    <label>Add <%= @movie.cap %> to my favorite list</label>
     <input type="submit" value="Add">
   </form>
 <% end %>
